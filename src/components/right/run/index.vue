@@ -84,6 +84,8 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import utils from '@/utils'
+
 import gauge from './gauge'
 export default {
   data () {
@@ -96,9 +98,10 @@ export default {
     ...mapGetters(['initDataTwo'])
   },
   methods: {
-    ...mapActions(['changeDetailInfo', 'toggleLoading', 'setRequestData']),
+    ...mapActions(['changeDetailInfo', 'toggleLoading', 'setRequestData', 'setErrorInfo']),
     change1 (ids) {
-      this.toggleLoading()
+      const _this = this
+      this.toggleLoading(true)
       let data = {
         'token': 'CBCFD8AB22DD476DAAA66728EE200373',
         'itemNo': '' + ids,
@@ -123,7 +126,9 @@ export default {
           index: '' + ids
         }
         this.changeDetailInfo(param)
-        this.toggleLoading()
+        this.toggleLoading(false)
+      }).catch((error) => {
+        utils.errorHandler(error, _this)
       })
     }
   },

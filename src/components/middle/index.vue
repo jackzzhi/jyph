@@ -38,6 +38,7 @@ import imgDefault from '@/assets/image/origin-blue.png'
 import imgSelect from '@/assets/image/origin-yellow.png'
 import bgDefault from '@/assets/image/tab-default.png'
 import bgActive from '@/assets/image/tab-active.png'
+import utils from '@/utils'
 
 export default {
   name: 'Index',
@@ -75,7 +76,7 @@ export default {
   },
   components: { MiddleMap, Echarts },
   methods: {
-    ...mapActions(['setInitDataOne', 'setInitDataTwo', 'toggleLoading']),
+    ...mapActions(['setInitDataOne', 'setInitDataTwo', 'toggleLoading', 'setErrorInfo']),
     changeType (type) {
       if (type === 'market') {
         this.isMarket = true
@@ -100,6 +101,7 @@ export default {
       return this.$axios.post(this.$url, data)
     },
     changeArea (id, name) {
+      const _this = this
       if (id === this.areaId) {
         return
       }
@@ -111,7 +113,9 @@ export default {
         this.setInitDataOne(res1.data.data)
         this.setInitDataTwo(res2.data.data)
         this.toggleLoading(false)
-      }))
+      })).catch((error) => {
+        utils.errorHandler(error, _this)
+      })
     }
   },
   created () {

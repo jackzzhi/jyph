@@ -34,5 +34,10 @@ export default {
   [types.SET_REQUEST_DATA] (state, param) {
     state.requestData.data = param.data
     state.requestData.params = param.params
+  },
+  [types.SET_ERROR_INFO] (state, param) {
+    state.errorInfo.type = param.type
+    state.errorInfo.errorText = param.errorText
+    state.errorInfo.isRefresh = param.isRefresh
   }
 }

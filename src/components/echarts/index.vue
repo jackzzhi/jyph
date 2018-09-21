@@ -15,6 +15,8 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import bgImg from '@/assets/image/boxBg.png'
+import utils from '@/utils'
+
 export default {
   name: 'Index',
   data () {
@@ -48,7 +50,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['changeDetailInfo', 'toggleLoading', 'setRequestData']),
+    ...mapActions(['changeDetailInfo', 'toggleLoading', 'setRequestData', 'setErrorInfo']),
     echartsRankingShow () {
       let dom = document.getElementById('echarts_ranking' + this.index + this.type)
       let myChart = this.$echarts.init(dom)
@@ -230,6 +232,7 @@ export default {
       myChart.off('click')
       myChart.on('click', (params) => {
         // debugger
+        const _this = this
         if (this.dataList.orgLevel === '4' || this.index === '74') {
           return
         }
@@ -261,11 +264,14 @@ export default {
           }
           this.changeDetailInfo(param)
           this.toggleLoading(false)
+        }).catch((error) => {
+          utils.errorHandler(error, _this)
         })
       })
     },
     // 获取全国排名数据
     showRanking () {
+      const _this = this
       this.toggleLoading(true)
       let itemNo = this.dataList.orgRankItemNo
       let data = {
@@ -292,6 +298,8 @@ export default {
         }
         this.changeDetailInfo(param)
         this.toggleLoading(false)
+      }).catch((error) => {
+        utils.errorHandler(error, _this)
       })
     }
   },

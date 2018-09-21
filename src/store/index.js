@@ -28,7 +28,12 @@ const state = {
   branchData: null,
   isLoading: false,
   againRequest: 0,
-  requestData: {}
+  requestData: {},
+  errorInfo: {
+    type: 0,
+    errorText: '',
+    isRefresh: false
+  }
 }
 
 export default new Vuex.Store({

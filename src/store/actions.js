@@ -32,5 +32,8 @@ export default {
   },
   setRequestData ({commit}, param) {
     commit(types.SET_REQUEST_DATA, param)
+  },
+  setErrorInfo ({commit}, param) {
+    commit(types.SET_ERROR_INFO, param)
   }
 }

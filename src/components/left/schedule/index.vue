@@ -154,13 +154,12 @@ export default {
       var p = document.getElementById('three').offsetWidth
       var o = document.getElementById('three1')
       if (a * 1 > b * 1) {
+        a = b
         $('.d').css('right', '11%')
-        o.style.width = ((a / b) * p) + 'px'
       }
       o.style.width = ((a / b) * p) + 'px' // p是外框的宽度
       if (a * 1 === b * 1) {
         $('.d').css('right', '11%')
-        o.style.width = ((a / a) * p) + 'px'
       }
     },
     three2 () {

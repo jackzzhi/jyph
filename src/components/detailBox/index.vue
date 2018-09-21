@@ -10,14 +10,14 @@
         <h3>{{detailInfo.titleSec}}</h3>
         <branch :changeIsLoading="changeIsLoading" v-if="detailInfo.type === 'branch'" :data="detailInfo.data[0][detailInfo.index]" :index="detailInfo.index"></branch>
         <ranking v-if="detailInfo.type === 'ranking'" :data="detailInfo.data[0][detailInfo.index]" :index="detailInfo.index"></ranking>
-        <widget-loading :isShow="isLoading"></widget-loading>
+        <widget-loading :isShow="isLoading" :type="errorInfo.type" :errorText="errorInfo.errorText" :isRefresh="errorInfo.isRefresh"></widget-loading>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import Branch from '@/components/detailBox/branch.vue'
 import Ranking from '@/components/detailBox/ranking.vue'
 import WidgetLoading from '@/components/common/WidgetLoading'
@@ -30,6 +30,9 @@ export default {
   },
   props: ['detailInfo'],
   components: { Branch, Ranking, WidgetLoading },
+  computed: {
+    ...mapGetters(['errorInfo'])
+  },
   methods: {
     ...mapActions(['changeDetailInfo']),
     closeBox () {

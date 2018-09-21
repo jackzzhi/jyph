@@ -7,6 +7,8 @@
 
 <script>
 import { mapActions } from 'vuex'
+import utils from '@/utils'
+
 export default {
   name: 'Index',
   data () {
@@ -27,7 +29,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['toggleBranch', 'changeDetailInfo', 'setRequestData']),
+    ...mapActions(['toggleBranch', 'changeDetailInfo', 'setRequestData', 'setErrorInfo']),
     branchShow () {
       let dom = document.getElementById('puhui_branch')
       let myChart = this.$echarts.init(dom)
@@ -218,6 +220,7 @@ export default {
       // 获取下一级数据
       myChart.off('click')
       myChart.on('click', (params) => {
+        const _this = this
         if (this.dataList.orgLevel === '4') {
           return
         }
@@ -249,6 +252,8 @@ export default {
           }
           this.changeDetailInfo(param)
           this.changeIsLoading()
+        }).catch((error) => {
+          utils.errorHandler(error, _this)
         })
       })
     }

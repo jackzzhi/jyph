@@ -1,5 +1,5 @@
 <template>
-  <div class="puhui_index" @resize="changeSize">
+  <div v-if="errorInfo.type === 0" class="puhui_index" @resize="changeSize">
     <div v-if="initDataOne && initDataTwo" class="puhui_cont">
       <div class="puhui_top">
         <puhui-left></puhui-left>
@@ -11,7 +11,10 @@
       </div>
       <detail v-if="detailInfo.show" :detailInfo="detailInfo"></detail>
     </div>
-    <widget-loading :isShow="isLoading"></widget-loading>
+    <widget-loading :isShow="isLoading" :type="errorInfo.type" :errorText="errorInfo.errorText" :isRefresh="errorInfo.isRefresh"></widget-loading>
+  </div>
+  <div v-else>
+    <Error></Error>
   </div>
 </template>
 
@@ -23,6 +26,8 @@ import PuhuiRight from '@/components/right'
 import PuhuiBottom from '@/components/bottom'
 import Detail from '@/components/detailBox'
 import WidgetLoading from '@/components/common/WidgetLoading'
+import Error from '@/components/common/WidgetError'
+import utils from '@/utils'
 
 export default {
   name: 'Index',
@@ -31,12 +36,12 @@ export default {
       orgCodeList: ['301']
     }
   },
-  components: { PuhuiMiddle, PuhuiLeft, PuhuiRight, PuhuiBottom, Detail, WidgetLoading },
+  components: { PuhuiMiddle, PuhuiLeft, PuhuiRight, PuhuiBottom, Detail, WidgetLoading, Error },
   computed: {
-    ...mapGetters(['isShowBranch', 'num', 'detailShow', 'detailInfo', 'initDataOne', 'initDataTwo', 'isLoading', 'requestData'])
+    ...mapGetters(['isShowBranch', 'num', 'detailShow', 'detailInfo', 'initDataOne', 'initDataTwo', 'isLoading', 'requestData', 'errorInfo'])
   },
   methods: {
-    ...mapActions(['changeSize', 'setInitDataOne', 'setInitDataTwo', 'toggleLoading', 'againRequestEvent', 'changeDetailInfo']),
+    ...mapActions(['changeSize', 'setInitDataOne', 'setInitDataTwo', 'toggleLoading', 'againRequestEvent', 'changeDetailInfo', 'setErrorInfo']),
     getOrgCodeList (val) {
       this.orgCodeList = val
     },
@@ -58,6 +63,7 @@ export default {
     },
     getAll () {
       // 重新请求branch数据
+      const _this = this
       if (this.detailInfo.show) {
         const { data, params } = this.requestData
         this.$axios.post(this.$url, data).then((res) => {
@@ -71,13 +77,17 @@ export default {
             index: '' + params.index
           }
           this.changeDetailInfo(param)
+        }).catch((error) => {
+          utils.errorHandler(error, _this)
         })
       }
       this.$axios.all([this.getInitDataOne(), this.getInitDataTwo()]).then(this.$axios.spread((res1, res2) => {
         this.setInitDataOne(res1.data.data)
         this.setInitDataTwo(res2.data.data)
         this.toggleLoading(false)
-      }))
+      })).catch((error) => {
+        utils.errorHandler(error, _this)
+      })
     }
   },
   created () {

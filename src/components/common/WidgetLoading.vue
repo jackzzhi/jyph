@@ -17,7 +17,7 @@ export default {
     return {
     }
   },
-  props: ['isShow'],
+  props: ['isShow', 'type', 'errorText', 'isRefresh'],
   methods: {}
 }
 

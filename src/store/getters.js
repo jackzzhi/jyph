@@ -11,5 +11,6 @@ export default {
   branchData: state => state.branchData,
   isLoading: state => state.isLoading,
   againRequest: state => state.againRequest,
-  requestData: state => state.requestData
+  requestData: state => state.requestData,
+  errorInfo: state => state.errorInfo
 }

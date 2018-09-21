@@ -13,7 +13,6 @@ import './assets/css/puhui.css'
 Vue.prototype.$axios = axios
 Vue.prototype.$echarts = echarts
 Vue.prototype.$url = 'http://bi.jieyuechina.com/api/saasbi/puhui/ph/list'
-// Vue.prototype.$url = 'http://172.18.101.118:10000/saasbi/puhui/ph/list'
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
